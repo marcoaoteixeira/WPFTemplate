@@ -1,4 +1,6 @@
-﻿namespace Nameless {
+﻿using System.Text;
+
+namespace Nameless {
     /// <summary>
     /// This class was defined to be an entrypoint for this project assembly.
     /// 
@@ -9,6 +11,14 @@
     /// </summary>
     public static class Root {
         #region Public Static Inner Classes
+
+        public static class Defaults {
+            #region Public Static Read-Only Properties
+
+            public static Encoding Encoding { get; } = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
+            #endregion
+        }
 
         public static class Constants {
             #region Public Constants

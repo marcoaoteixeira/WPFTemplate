@@ -18,9 +18,8 @@ namespace Nameless.Impl {
         public static IServiceCollection RegisterApplicationContext(this IServiceCollection self, string appName, Version appVersion, bool useSpecialFolder = true)
             => self.AddSingleton<IApplicationContext>(new ApplicationContext(appName, appVersion, useSpecialFolder));
 
-        public static IServiceCollection RegisterAppConfigurationManager<TAppConfiguration>(this IServiceCollection self)
-            where TAppConfiguration : AppConfiguration, new()
-            => self.AddSingleton<IAppConfigurationManager<TAppConfiguration>, AppConfigurationManager<TAppConfiguration>>();
+        public static IServiceCollection RegisterAppConfigurationProvider(this IServiceCollection self)
+            => self.AddSingleton<IAppConfigurationProvider<AppConfiguration>, AppConfigurationProvider>();
 
         public static IServiceCollection RegisterBootstrap(this IServiceCollection self, Assembly[] supportAssemblies) {
             var types = supportAssemblies.SelectMany(assembly => assembly.GetExportedTypes())
@@ -41,12 +40,10 @@ namespace Nameless.Impl {
         }
 
         public static IServiceCollection RegisterLogging(this IServiceCollection self)
-            => self
-                .AddLogging(configure => {
-                    configure.ClearProviders();
-                    configure.AddNLog();
-                });
-
+            => self.AddLogging(configure => {
+                configure.ClearProviders();
+                configure.AddNLog();
+            });
 
         public static IServiceCollection RegisterMessageBoxService(this IServiceCollection self)
             => self.AddSingleton<IMessageBoxService, MessageBoxService>();

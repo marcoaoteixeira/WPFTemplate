@@ -3,6 +3,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Extensions.Logging;
 using Nameless.Client.Objects;
 using Nameless.Client.ViewModels.Windows;
+using Nameless.Impl.Infrastructure;
 using Nameless.Infrastructure;
 using Nameless.MessageBox;
 using Nameless.Objects;
@@ -14,7 +15,7 @@ namespace Nameless.Client.Views.Windows {
     public partial class MainWindow : INavigationWindow {
         #region Private Read-Only Fields
 
-        private readonly IAppConfigurationManager<AppConfiguration> _appConfigurationManager;
+        private readonly IAppConfigurationProvider<AppConfiguration> _appConfigurationManager;
         private readonly IMessageBoxService _messageBoxService;
         private readonly INavigationService _navigationService;
         private readonly IPageService _pageService;
@@ -39,7 +40,7 @@ namespace Nameless.Client.Views.Windows {
         #region Public Constructors
 
         public MainWindow(MainViewModel viewModel,
-            IAppConfigurationManager<AppConfiguration> appConfigurationManager,
+            IAppConfigurationProvider<AppConfiguration> appConfigurationManager,
             IMessageBoxService messageBoxService,
             INavigationService navigationService,
             IPageService pageService,
@@ -90,11 +91,8 @@ namespace Nameless.Client.Views.Windows {
             if (_initialized) { return; }
 
             SystemThemeWatcher.Watch(window: this);
-
             
-            ApplicationThemeManager.Apply(
-                applicationTheme: Enum.Parse<ApplicationTheme>(value: _appConfigurationManager.Current.Theme)
-            );
+            ApplicationThemeManager.Apply(_appConfigurationManager.Current.Theme);
 
             _navigationService.SetNavigationControl(navigation: RootNavigationView);
             _snackbarService.SetSnackbarPresenter(contentPresenter: RootSnackbarPresenter);

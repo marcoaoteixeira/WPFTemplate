@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nameless.Bootstrapping;
 using Nameless.Impl;
+using Nameless.Impl.Infrastructure;
 using Nameless.Infrastructure;
 using Wpf.Ui;
 using ClientRoot = Nameless.Client.Root;
@@ -60,7 +61,7 @@ namespace Nameless.Client {
         #region Private Static Methods
 
         private static void ConfigureServices(IServiceCollection services)
-            => services.RegisterAppConfigurationManager<AppConfiguration>()
+            => services.RegisterAppConfigurationProvider()
                        .RegisterApplicationContext(
                            appName: ClientRoot.App.NAME,
                            appVersion: typeof(App).Assembly

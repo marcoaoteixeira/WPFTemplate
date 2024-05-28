@@ -2,6 +2,7 @@
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Nameless.Impl.Infrastructure;
 using Nameless.Infrastructure;
 using Wpf.Ui.Appearance;
 
@@ -10,7 +11,7 @@ namespace Nameless.Client.ViewModels.Pages {
         #region Private Read-Only Fields
 
         private readonly IApplicationContext _applicationContext;
-        private readonly IAppConfigurationManager<AppConfiguration> _appConfigurationManager;
+        private readonly IAppConfigurationProvider<AppConfiguration> _appConfigurationManager;
 
         #endregion
 
@@ -42,7 +43,7 @@ namespace Nameless.Client.ViewModels.Pages {
 
         #region Public Constructors
 
-        public AppConfigurationViewModel(IApplicationContext applicationContext, IAppConfigurationManager<AppConfiguration> appConfigurationManager) {
+        public AppConfigurationViewModel(IApplicationContext applicationContext, IAppConfigurationProvider<AppConfiguration> appConfigurationManager) {
             ArgumentNullException.ThrowIfNull(applicationContext, nameof(applicationContext));
             ArgumentNullException.ThrowIfNull(appConfigurationManager, nameof(appConfigurationManager));
 
@@ -61,7 +62,7 @@ namespace Nameless.Client.ViewModels.Pages {
 
             
             ConfirmBeforeExit = _appConfigurationManager.Current.ConfirmBeforeExit;
-            CurrentTheme = Enum.Parse<ApplicationTheme>(_appConfigurationManager.Current.Theme);
+            CurrentTheme = _appConfigurationManager.Current.Theme;
 
             _initialized = true;
         }
@@ -70,7 +71,7 @@ namespace Nameless.Client.ViewModels.Pages {
             if (oldValue == newValue) { return; }
 
             ApplicationThemeManager.Apply(newValue);
-            _appConfigurationManager.Current.Theme = newValue.ToString();
+            _appConfigurationManager.Current.Theme = newValue;
         }
 
         #endregion

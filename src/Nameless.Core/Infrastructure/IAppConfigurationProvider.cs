@@ -1,6 +1,6 @@
 ﻿namespace Nameless.Infrastructure {
-    public interface IAppConfigurationManager<out TAppConfiguration>
-        where TAppConfiguration : AppConfiguration, new() {
+    public interface IAppConfigurationProvider<out TAppConfiguration>
+        where TAppConfiguration : class, new() {
         #region Properties
 
         TAppConfiguration Current { get; }
